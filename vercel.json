@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/chair/:code",
+      "destination": "/"
+    },
+    {
+      "source": "/delegate",
+      "destination": "/"
+    },
+    {
+      "source": "/delegate/:code",
+      "destination": "/"
+    }
+  ]
+}
