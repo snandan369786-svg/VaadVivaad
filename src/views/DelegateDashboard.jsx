@@ -1,3 +1,4 @@
+console.log("BUILD 24 JUNE 11:47 PM");
 import { useEffect, useMemo, useState } from 'react';
 import {
   Badge,
@@ -47,11 +48,18 @@ export function DelegateDashboard({
   const [actionMessage, setActionMessage] = useState('');
   const [busyAction, setBusyAction] = useState('');
   const hasAccess = membership?.role === 'delegate';
-  const membershipId = membership?.id ?? membership?.membership_id;
-  const { snapshot, loading, error, refresh } = useCommitteeData(
-    committeeCode,
-    hasAccess
-  );
+
+const membershipId = membership?.id ?? membership?.membership_id;
+
+const { snapshot, loading, error, refresh } = useCommitteeData(
+  committeeCode,
+  hasAccess
+);
+
+console.log("MEMBERSHIP:", membership);
+console.log("HAS ACCESS:", hasAccess);
+console.log("SNAPSHOT:", snapshot);
+  
 
   useEffect(() => {
     setLandingCode(committeeCode ?? '');
@@ -248,7 +256,9 @@ export function DelegateDashboard({
       </main>
     );
   }
-
+console.log("MEMBERSHIP =", membership);
+console.log("HAS ACCESS =", hasAccess);
+console.log("BOOT LOADING =", bootLoading);
   if (!hasAccess) {
     return (
       <main className="page dashboard-page">
@@ -282,6 +292,8 @@ export function DelegateDashboard({
                     joinForm.displayName
                   );
                   const nextMembership = await getMyMembership(committeeCode);
+                  console.log("NEXT MEMBERSHIP:", nextMembership);
+setMembership(nextMembership);
                   setMembership(nextMembership);
                 },
                 `Joined as ${joinForm.country}.`
@@ -341,8 +353,24 @@ export function DelegateDashboard({
   }
 
   if (!snapshot) {
-    return null;
-  }
+  return (
+    <main className="page">
+      <p>Loading committee data...</p>
+      <pre>
+        {JSON.stringify(
+          {
+            membership,
+            hasAccess,
+            loading,
+            error
+          },
+          null,
+          2
+        )}
+      </pre>
+    </main>
+  );
+}
 
   return (
     <main className="page dashboard-page">
